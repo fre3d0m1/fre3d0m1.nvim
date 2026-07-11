@@ -11,6 +11,7 @@ require("nvim-treesitter").install({
 	"rust",
 	"gdscript",
 	"gdshader",
+	"godot_resource",
 	"cpp",
 	"dart",
 })
