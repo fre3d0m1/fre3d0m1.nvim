@@ -29,3 +29,5 @@ if gdproject then
 	io.close(gdproject)
 	pcall(vim.fn.serverstart, '127.0.0.1:6004')
 end
+
+vim.opt.swapfile = false
