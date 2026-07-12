@@ -1,37 +1,3 @@
--- require("akita")
--- require("config.lazy")
---
--- require("conform").setup({
--- 	formatters_by_ft = {
--- 		lua = { "stylua" },
--- 		-- Conform will run multiple formatters sequentially
--- 		python = { "pyright" },
--- 		-- You can customize some of the format options for the filetype (:help conform.format)
--- 		rust = { "rustfmt", lsp_format = "fallback" },
--- 		-- Conform will run the first available formatter
--- 		javascript = { "prettierd", "prettier", stop_after_first = true },
--- 	},
--- 	format_after_save = {
--- 		async = true,
--- 		lsp_format = "fallback",
--- 	},
--- })
---
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
--- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
--- vim.lsp.config('gdscript', {
--- 	capabilities = capabilities
--- })
--- vim.lsp.enable('gdscript')
---
--- local gdproject = io.open(vim.fn.getcwd() .. '/project.godot', 'r')
--- if gdproject then
--- 	io.close(gdproject)
--- 	pcall(vim.fn.serverstart, '127.0.0.1:6004')
--- end
---
--- vim.opt.swapfile = false
-
 -- Core Neovim Settings
 do
 	vim.loader.enable()
@@ -82,7 +48,7 @@ end
 
 -- Keymaps
 do
-	vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+	vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear code highlights" })
 
 	-- Diagnostic Config & Keymaps
 	vim.diagnostic.config({
@@ -109,7 +75,7 @@ do
 
 	vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
-	-- vim.keymap.set("v", "n", "<leader>pv")
+	vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Exit to Neovim file tree" })
 end
 
 -- PLUGIN MANAGER
@@ -197,6 +163,11 @@ do
 	require("catppuccin").setup({
 		flavour = "mocha",
 		no_italic = true,
+		transparent_background = true,
+		float = {
+			transparent = true, -- enable transparent floating windows
+			solid = false, -- use solid styling for floating windows, see |winborder|
+		},
 	})
 
 	vim.cmd.colorscheme("catppuccin")
@@ -207,7 +178,19 @@ do
 	vim.pack.add({ gh("nvim-mini/mini.nvim") })
 
 	if vim.g.have_nerd_font then
-		require("mini.icons").setup()
+		require("mini.icons").setup({
+			-- Add custom overrides for file extensions
+			extension = {
+				blend = { glyph = "󰂫", hl = "MiniIconsOrange" },
+				fbx = { glyph = "󰆧", hl = "MiniIconsPurple" },
+				obj = { glyph = "󰆦", hl = "MiniIconsCyan" },
+				aseprite = { glyph = "󾓪", hl = "MiniIconsPurple" },
+				odt = { glyph = "󰈙", hl = "MiniIconsBlue" },
+				godot = { glyph = "", hl = "MiniIconsCyan" },
+				uid = { glyph = "󰛢", hl = "MiniIconsGrey" },
+				import = { glyph = "󰛕", hl = "MiniIconsYellow" },
+			},
+		})
 		MiniIcons.mock_nvim_web_devicons()
 	end
 
