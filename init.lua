@@ -419,6 +419,10 @@ do
 
 		stylua = {}, -- Used to format Lua code
 
+		pyright = {},
+
+		ruff = {},
+
 		-- Special Lua Config, as recommended by neovim help docs
 		lua_ls = {
 			on_init = function(client)
@@ -511,6 +515,9 @@ do
 		format_on_save = function(bufnr)
 			local enabled_filetypes = {
 				lua = true,
+				python = true,
+				rust = true,
+				gdscript = true,
 			}
 			if enabled_filetypes[vim.bo[bufnr].filetype] then
 				return { timeout_ms = 500 }
@@ -523,9 +530,10 @@ do
 		},
 		formatters_by_ft = {
 			lua = { "stylua" },
-			python = { "pyright" },
+			python = { "ruff_format" },
 			rust = { "rustfmt", lsp_format = "fallback" },
 			javascript = { "prettierd", "prettier", stop_after_first = true },
+			gdscript = { "gdscript-formatter" },
 		},
 	})
 
